@@ -2,16 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-/// <summary>
 /// Main program class for the Journal Application.
 /// Manages user interaction through a menu system.
-/// </summary>
+
 class Program
 {
-    /// <summary>
+
     /// Entry point of the application.
     /// Initializes journal and prompt generator, then runs the main menu loop.
-    /// </summary>
+ 
     static void Main(string[] args)
     {
         Journal journal = new Journal();
@@ -64,12 +63,12 @@ class Program
         }
     }
 
-    /// <summary>
+ 
     /// Handles writing a new journal entry.
     /// Generates a random prompt, gets user response, creates entry, adds to journal.
-    /// </summary>
-    /// <param name="journal">The journal instance to add the entry to.</param>
-    /// <param name="promptGenerator">The prompt generator to get a random prompt.</param>
+
+    /// The journal instance to add the entry to.
+    /// The prompt generator to get a random prompt.
     static void WriteNewEntry(Journal journal, PromptGenerator promptGenerator)
     {
         string prompt = promptGenerator.GetRandomPrompt();
@@ -85,10 +84,10 @@ class Program
         Console.WriteLine("✅ Entry successfully added!");
     }
 
-    /// <summary>
+    
     /// Prompts user for filename and saves the journal to that file.
-    /// </summary>
-    /// <param name="journal">The journal instance to save.</param>
+  
+    /// The journal instance to save
     static void SaveJournalToFile(Journal journal)
     {
         Console.Write("💾 Enter filename to save (e.g., myjournal.txt): ");
@@ -104,10 +103,10 @@ class Program
         }
     }
 
-    /// <summary>
+
     /// Prompts user for filename and loads journal from that file.
-    /// </summary>
-    /// <param name="journal">The journal instance to load into.</param>
+
+    /// The journal instance to load into.
     static void LoadJournalFromFile(Journal journal)
     {
         Console.Write("📂 Enter filename to load: ");
@@ -124,33 +123,33 @@ class Program
     }
 }
 
-/// <summary>
+
 /// Represents a single journal entry with date, prompt, and response.
 /// Demonstrates abstraction by encapsulating data and behavior.
-/// </summary>
+
 public class Entry
 {
-    /// <summary>
+    
     /// Gets or sets the date of the entry.
-    /// </summary>
+    
     public string Date { get; set; }
 
-    /// <summary>
+   
     /// Gets or sets the prompt that inspired this entry.
-    /// </summary>
+   
     public string Prompt { get; set; }
 
-    /// <summary>
+    
     /// Gets or sets the user's written response.
-    /// </summary>
+    
     public string Response { get; set; }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Entry"/> class.
-    /// </summary>
-    /// <param name="date">The date of the entry.</param>
-    /// <param name="prompt">The prompt used for this entry.</param>
-    /// <param name="response">The user's response.</param>
+    
+    /// Initializes a new instance of the class.
+    
+    /// The date of the entry.
+    /// The prompt used for this entry.
+    /// The user's response.
     public Entry(string date, string prompt, string response)
     {
         Date = date;
@@ -158,10 +157,10 @@ public class Entry
         Response = response;
     }
 
-    /// <summary>
+
     /// Displays the entry in a formatted way to the console.
     /// Abstraction: User doesn't need to know internal structure — just call Display().
-    /// </summary>
+    
     public void Display()
     {
         Console.WriteLine($"📅 Date: {Date}");
@@ -170,11 +169,11 @@ public class Entry
         Console.WriteLine(); // Blank line for readability
     }
 
-    /// <summary>
+
     /// Converts the entry to a CSV-formatted string for saving to file.
     /// Escapes quotes by doubling them to handle commas and quotes in content.
-    /// </summary>
-    /// <returns>A CSV-formatted string representation of the entry.</returns>
+    
+    /// A CSV-formatted string representation of the entry
     public override string ToString()
     {
         string escapedDate = EscapeCsv(Date);
@@ -184,12 +183,9 @@ public class Entry
         return $"\"{escapedDate}\",\"{escapedPrompt}\",\"{escapedResponse}\"";
     }
 
-    /// <summary>
+
     /// Creates an Entry instance from a CSV-formatted string.
-    /// </summary>
-    /// <param name="line">The CSV line to parse.</param>
-    /// <returns>A new Entry object.</returns>
-    /// <exception cref="ArgumentException">Thrown if the format is invalid.</exception>
+
     public static Entry FromString(string line)
     {
         string[] parts = line.Split(',');
@@ -204,21 +200,17 @@ public class Entry
         throw new ArgumentException("Invalid entry format. Expected 3 comma-separated fields.");
     }
 
-    /// <summary>
+    
     /// Escapes a string for CSV by doubling double quotes.
-    /// </summary>
-    /// <param name="value">The string to escape.</param>
-    /// <returns>The escaped string.</returns>
+
     private static string EscapeCsv(string value)
     {
         return value?.Replace("\"", "\"\"") ?? "";
     }
 
-    /// <summary>
+    
     /// Unescapes a CSV string by removing surrounding quotes and unescaping doubled quotes.
-    /// </summary>
-    /// <param name="value">The string to unescape.</param>
-    /// <returns>The unescaped string.</returns>
+
     private static string UnescapeCsv(string value)
     {
         if (string.IsNullOrEmpty(value))
@@ -233,27 +225,25 @@ public class Entry
     }
 }
 
-/// <summary>
 /// Manages a collection of journal entries.
 /// Encapsulates adding, displaying, saving, and loading entries.
-/// </summary>
 public class Journal
 {
     private List<Entry> _entries = new List<Entry>();
 
-    /// <summary>
+
     /// Adds a new entry to the journal.
-    /// </summary>
-    /// <param name="entry">The entry to add.</param>
+
+    /// The entry to add.
     public void AddEntry(Entry entry)
     {
         _entries.Add(entry);
     }
 
-    /// <summary>
+
     /// Displays all entries in the journal.
     /// If no entries exist, displays a message.
-    /// </summary>
+
     public void DisplayAll()
     {
         if (_entries.Count == 0)
@@ -269,10 +259,8 @@ public class Journal
         }
     }
 
-    /// <summary>
     /// Saves all entries to a text file in CSV format.
-    /// </summary>
-    /// <param name="filename">The name of the file to save to.</param>
+    /// The name of the file to save to.
     public void SaveToFile(string filename)
     {
         using (StreamWriter writer = new StreamWriter(filename))
@@ -285,11 +273,11 @@ public class Journal
         Console.WriteLine($"✅ Journal saved to '{filename}'. You can open it in Excel!");
     }
 
-    /// <summary>
+    
     /// Loads entries from a text file into the journal.
     /// Replaces any existing entries.
-    /// </summary>
-    /// <param name="filename">The name of the file to load from.</param>
+    
+    /// The name of the file to load from.
     public void LoadFromFile(string filename)
     {
         _entries.Clear(); // Clear current entries
@@ -321,10 +309,8 @@ public class Journal
     }
 }
 
-/// <summary>
 /// Generates random prompts for journal entries.
 /// Encapsulates prompt list and selection logic.
-/// </summary>
 public class PromptGenerator
 {
     private string[] _prompts = {
@@ -340,10 +326,10 @@ public class PromptGenerator
 
     private Random _random = new Random();
 
-    /// <summary>
+
     /// Returns a randomly selected prompt from the list.
-    /// </summary>
-    /// <returns>A random prompt string.</returns>
+
+    /// A random prompt string.
     public string GetRandomPrompt()
     {
         int index = _random.Next(_prompts.Length);
